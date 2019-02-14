@@ -1,3 +1,6 @@
 [submodule "pos_app"]
 	path = pos_app
 	url = git@github.com:t-sweets/app.git
+[submodule "pos_api"]
+	path = pos_api
+	url = git@github.com:t-sweets/pos.git
