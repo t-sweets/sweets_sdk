@@ -4,3 +4,6 @@
 [submodule "pos_api"]
 	path = pos_api
 	url = git@github.com:t-sweets/pos.git
+[submodule "reader"]
+	path = reader
+	url = git@github.com:t-sweets/reader.git
