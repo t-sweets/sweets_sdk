@@ -37,3 +37,12 @@ services:
             - "/app/node_modules"
         stdin_open: true
         tty: true
+
+    reader:
+        build: ./reader
+        environment:
+        - READER_ENV=config.TestingConfig
+        ports:
+        - "8000:8000"
+        volumes:
+        - .:/app
