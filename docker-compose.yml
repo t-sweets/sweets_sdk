@@ -1,7 +1,7 @@
 version: '3'
 services:
 
-    db:
+    pos_db:
         image: mysql:5.7.22
         volumes:
               - ./db/mysql_data:/var/lib/mysql
@@ -17,15 +17,15 @@ services:
         build: ./pos_api
         command: bundle exec rails s -p 3000 -b '0.0.0.0'
         environment:
-          DB_HOST_NAME: db
+          DB_HOST_NAME: pos_db
         volumes:
             - "./pos_api:/rails"
         ports:
             - "3000:3000"
         depends_on:
-            - db
+            - pos_db
         links:
-            - db
+            - pos_db
 
     pos_app:  
         build: ./pos_app
@@ -45,4 +45,28 @@ services:
         ports:
         - "8000:8000"
         volumes:
-        - .:/app
+        - ./reader:/app
+    
+    tpay_db:
+        image: mysql:5.7.22
+        command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+        volumes:
+            - ./db/mysql_data:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: test
+            MYSQL_PASSWORD: test
+            MYSQL_DATABASE: test
+        restart: always
+    
+    tpay_api:
+        build: ./tpay_api
+        command: sh -c "./wait-for-it.sh db:3306; python3 manage.py runserver 0.0.0.0:9000"
+        ports:
+            - "9000:9000"
+        volumes:
+            - ./tpay_api:/app
+        environment:
+        DB_HOST_NAME: tpay_db
+        depends_on:
+            - tpay_db
