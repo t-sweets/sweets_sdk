@@ -11,3 +11,13 @@ $ git submodule foreach git pull origin develop
 $ docker-compose build
 $ docker-compose up
 ```
+
+## Service List
+- POS API
+    - http://0.0.0.0:3000
+- POS APP
+    - http://0.0.0.0:13000
+- Tpay API
+    - http://0.0.0.0:9000
+- Reader
+    - http://0.0.0.0:8000

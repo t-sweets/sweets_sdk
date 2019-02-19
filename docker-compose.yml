@@ -4,7 +4,7 @@ services:
     pos_db:
         image: mysql:5.7.22
         volumes:
-              - ./db/mysql_data:/var/lib/mysql
+              - ./pos_db/mysql_data:/var/lib/mysql
         ports:
              - "3307:3306"
         environment:
@@ -51,7 +51,7 @@ services:
         image: mysql:5.7.22
         command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
         volumes:
-            - ./db/mysql_data:/var/lib/mysql
+            - ./tpay_db/mysql_data:/var/lib/mysql
         environment:
             MYSQL_ROOT_PASSWORD: root
             MYSQL_USER: test
@@ -61,12 +61,12 @@ services:
     
     tpay_api:
         build: ./tpay_api
-        command: sh -c "./wait-for-it.sh db:3306; python3 manage.py runserver 0.0.0.0:9000"
+        command: sh -c "./wait-for-it.sh tpay_db:3306; python3 manage.py runserver 0.0.0.0:9000"
         ports:
             - "9000:9000"
         volumes:
             - ./tpay_api:/app
         environment:
-        DB_HOST_NAME: tpay_db
+            DB_HOST_NAME: tpay_db
         depends_on:
             - tpay_db
